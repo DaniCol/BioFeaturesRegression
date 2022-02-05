@@ -1,0 +1,10 @@
+DATA_DIR: '../data'
+OUTPUT_DIR: '../models'
+PREPROCESSING:
+  NORMALIZATION:
+    MINMAX: True
+    MEANSTD: False
+  VALID_RATIO : 0.2
+  RANDOM_STATE : 21
+
+MODEL_OUTPUT : "output.csv"
