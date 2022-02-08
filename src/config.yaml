@@ -1,0 +1,13 @@
+DATA_DIR: '../data'
+OUTPUT_DIR: '../models'
+PREPROCESSING:
+  NORMALIZATION:
+    ACTIVE : True
+    MINMAX: True
+    MEANSTD: False
+  NUM_COMPONNENT : 150
+  VALID_RATIO : 0.2
+  RANDOM_STATE : 21
+  BATCH_SIZE : 4
+  NUM_THREADS : 4
+MODEL_OUTPUT : "output.csv"
