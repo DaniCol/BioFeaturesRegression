@@ -88,7 +88,12 @@ class DataReader:
         Returns:
             numpy arrays: the data
         """
-        return self.X_train, self.X_valid, self.Y_train, self.Y_valid
+        return (
+            self.X_train,
+            self.X_valid,
+            self.Y_train.to_numpy(),
+            self.Y_valid.to_numpy(),
+        )
 
     def get_test(self):
         """Getter to return the test data
