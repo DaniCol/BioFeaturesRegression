@@ -15,19 +15,23 @@ We can test other methods like LDA or filtering methods ..  . . . . . . .
 
 ### SVM
 
-à implémenter
+To tune the SVM, check the config file and set 'ACTIVE' to True
 
 ### Random Forest
 
-à implémenter
-
-### FCNetwork
-
-à implémenter
+To tune the Random Forest, check the config file and set 'ACTIVE' to True
 
 ### Linear Regression
 
-à implémenter
+To tune the Linear Regression, check the config file and set 'ACTIVE' to True
+
+### FCNetwork
+
+To tune the FCNetwork, check the config file and set 'ACTIVE' to True
+
+### Data and Results Visualization
+
+à Implémenter
 
 ### Grid Search for svm/pca
 
@@ -36,3 +40,14 @@ We can test other methods like LDA or filtering methods ..  . . . . . . .
 ### XGBoost
 
 à tester
+
+
+# RUN the training
+
+Go to ./src and run the following command.
+Don't forget to change the MODEL_OUTPUT name depending on the model you want to train.
+
+```
+cd src
+python3 main.py --path_to_config ./config.yaml
+```

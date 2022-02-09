@@ -31,7 +31,7 @@ class DataReader:
         self.X_valid = None
         self.Y_valid = None
         self.X_test = None
-        self.test = False
+        self.test_features = None
         self.features = None
         self.reduced_features = None
 
@@ -58,17 +58,19 @@ class DataReader:
         labels = pd.read_csv(
             os.path.join(self.cfg["DATA_DIR"], "output_training_4fUZmFS.csv")
         )
-        test = pd.read_csv(os.path.join(self.cfg["DATA_DIR"], "input_testing.csv"))
+        self.test_features = pd.read_csv(
+            os.path.join(self.cfg["DATA_DIR"], "input_testing.csv")
+        )
 
         # Remove first column _ID
         self.features.drop("_ID", axis=1, inplace=True)
         labels.drop("_ID", axis=1, inplace=True)
-        test.drop("_ID", axis=1, inplace=True)
+        self.X_test = self.test_features.drop("_ID", axis=1)
 
         # Normalize
         if self.cfg["PREPROCESSING"]["NORMALIZATION"]["ACTIVE"]:
             self.features = self.scaler.fit_transform(self.features)
-            self.X_test = self.scaler.transform(test)
+            self.X_test = self.scaler.transform(self.X_test)
 
         # Run PCA on the input features and the test set
         self.reduced_features = self.pca.fit_transform(self.features)
@@ -101,7 +103,7 @@ class DataReader:
         Returns:
             Numpy array: the test data
         """
-        return self.X_test
+        return self.X_test, self.test_features.iloc[:, 0]
 
     def get_features(self):
         """Get the features

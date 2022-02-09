@@ -3,7 +3,7 @@ import yaml
 import torch
 from torch.utils.data import Dataset, DataLoader
 
-from data_reader import DataReader
+from dataset.data_reader import DataReader
 
 
 class BIO(Dataset):
@@ -65,8 +65,12 @@ def loader(cfg):
     X_test = data.get_test()
     print(type(Y_train))
     # Build Torch dataset
-    train_dataset = BIO(torch.from_numpy(X_train), torch.from_numpy(Y_train))
-    valid_dataset = BIO(torch.from_numpy(X_valid), torch.from_numpy(Y_valid))
+    train_dataset = BIO(
+        torch.from_numpy(X_train).float(), torch.from_numpy(Y_train).float()
+    )
+    valid_dataset = BIO(
+        torch.from_numpy(X_valid).float(), torch.from_numpy(Y_valid).float()
+    )
     test_dataset = BIO(torch.from_numpy(X_test).float(), test=True)
 
     # Build torch loaders
