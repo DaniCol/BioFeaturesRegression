@@ -99,15 +99,15 @@ def main_ML(cfg):
 
     # Define the model
     BioRegressor = BIOregressor(cfg)
-    print(data)
+    print(BioRegressor.get_params())
     # Train the model
-    BioRegressor.train(X_train, X_valid, Y_train, Y_valid)
+    BioRegressor.train_grid_search(X_train, X_valid, Y_train, Y_valid)
 
     # Get the performances
     R2_train, R2_valid = BioRegressor.get_r2()
 
     # Run inference on the test set
-    test_prediction = BioRegressor.inference(X_test)
+    test_prediction = BioRegressor.inference_grid_search(X_test)
 
     # Print the regression coeffs
     print(
