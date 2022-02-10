@@ -1,6 +1,7 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import GridSearchCV
 
 
 class BIOregressor:
@@ -26,12 +27,44 @@ class BIOregressor:
                 epsilon=self.cfg["SVM"]["EPS"],
                 shrinking=True,
             )
+            if self.cfg["SVM"]["GRID_SEARCH"]["ACTIVE"]:
+                self.params = {
+                    "kernel": self.cfg["SVM"]["GRID_SEARCH"]["KERNEL"],
+                    "degree": self.cfg["SVM"]["GRID_SEARCH"]["DEGREE"],
+                    "gamma": self.cfg["SVM"]["GRID_SEARCH"]["GAMMA"],
+                    "coef0": self.cfg["SVM"]["GRID_SEARCH"]["COEFF0"],
+                    "tol": self.cfg["SVM"]["GRID_SEARCH"]["TOL"],
+                    "C": self.cfg["SVM"]["GRID_SEARCH"]["C"],
+                    "epsilon": self.cfg["SVM"]["GRID_SEARCH"]["EPS"],
+                    "shrinking": [True, False],
+                }
+                self.grid_search = GridSearchCV(
+                    self.model, self.params, verbose=3, scoring="neg_mean_squared_error"
+                )
 
         if self.cfg["RANDOMFOREST"]["ACTIVE"]:
             self.model = RandomForestRegressor(
                 n_estimators=self.cfg["RANDOMFOREST"]["N_ESTIMATOR"],
                 max_depth=self.cfg["RANDOMFOREST"]["MAX_DEPTH"],
             )
+            if self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["ACTIVE"]:
+                self.params = {
+                    "n_estimators": list(
+                        range(
+                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["N_ESTIMATOR"][0],
+                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["N_ESTIMATOR"][1],
+                        )
+                    ),
+                    "max_depth": list(
+                        range(
+                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["MAX_DEPTH"][0],
+                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["MAX_DEPTH"][1],
+                        )
+                    ),
+                }
+                self.grid_search = GridSearchCV(
+                    self.model, self.params, verbose=3, scoring="neg_mean_squared_error"
+                )
 
         if self.cfg["LINEAR"]["ACTIVE"]:
             self.model = LinearRegression(fit_intercept=self.cfg["LINEAR"]["NORM"])
@@ -54,6 +87,34 @@ class BIOregressor:
         # Check the performances on the validation set
         self.r2_valid = self.model.score(X_valid, Y_valid)
         print("End of Training")
+
+    def train_grid_search(self, X_train, X_valid, Y_train, Y_valid):
+        """Function to train a model with grid search optim
+        """
+
+        # Train with grid search
+        print("Sart Training with grid search")
+        self.grid_search.fit(X_train, Y_train)
+        self.r2_train = self.grid_search.score(X_train, Y_train)
+
+        # Check the performances on the validation set
+        self.r2_valid = self.grid_search.score(X_valid, Y_valid)
+        print("End of Training with grid search")
+
+    def inference_grid_search(self, X_test):
+        """Run inference with the best found model
+
+        Args:
+            X_test (np.array): test features
+
+        Returns:
+            np.array: estimated value for Y_test
+        """
+
+        # Run inference on the test set
+        prediction = self.grid_search.predict(X_test)
+
+        return prediction
 
     def inference(self, X_test):
         """Runs inference on the test set
