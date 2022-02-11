@@ -24,11 +24,11 @@ MODEL:
     EPS : 0.2
     GRID_SEARCH:
       ACTIVE: False
-      KERNEL: ['rbf']
-      DEGREE : [1,2,3,4,5]
+      KERNEL: ["linear", "poly", "rbf", "sigmoid"]
+      DEGREE : [1,2,3,4]
       GAMMA: ['scale']
       COEFF0: [0.0,0.1,0.2,0.3]
-      TOL : [0.001,0.01,0.002]
+      TOL : [0.001]
       C: [1.0,2.0,0.5]
       EPS : [0.05,0.1,0.15,0.20]
   RANDOMFOREST :
@@ -37,7 +37,7 @@ MODEL:
     MAX_DEPTH : 100
     GRID_SEARCH:
       ACTIVE: True
-      N_ESTIMATOR : [3,400]
+      N_ESTIMATOR : [3,200]
       MAX_DEPTH : [3,100]
   LINEAR :
     ACTIVE : False

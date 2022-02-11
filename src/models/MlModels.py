@@ -1,3 +1,5 @@
+import numpy as np
+
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 from sklearn.linear_model import LinearRegression
@@ -39,7 +41,7 @@ class BIOregressor:
                     "shrinking": [True, False],
                 }
                 self.grid_search = GridSearchCV(
-                    self.model, self.params, verbose=3, scoring="neg_mean_squared_error"
+                    self.model, self.params, verbose=2, cv = 3
                 )
 
         if self.cfg["RANDOMFOREST"]["ACTIVE"]:
@@ -63,7 +65,7 @@ class BIOregressor:
                     ),
                 }
                 self.grid_search = GridSearchCV(
-                    self.model, self.params, verbose=3, scoring="neg_mean_squared_error"
+                    self.model, self.params, verbose=2,cv = 3
                 )
 
         if self.cfg["LINEAR"]["ACTIVE"]:
@@ -91,7 +93,8 @@ class BIOregressor:
     def train_grid_search(self, X_train, X_valid, Y_train, Y_valid):
         """Function to train a model with grid search optim
         """
-
+        X_train = np.concatenate((X_train,X_valid))
+        Y_train = np.concatenate((Y_train,Y_valid)).ravel()
         # Train with grid search
         print("Sart Training with grid search")
         self.grid_search.fit(X_train, Y_train)
