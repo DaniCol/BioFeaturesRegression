@@ -10,8 +10,9 @@ PREPROCESSING:
   RANDOM_STATE : 21
   BATCH_SIZE : 4
   NUM_THREADS : 4
-MODEL_OUTPUT : "RandomForestSubmission.csv"
+MODEL_OUTPUT : "averaged_model.csv"
 TENSORBOARD : "./tensorboard"
+AVERAGE: ['RandomForestSubmission.csv','SvrGridSearch.csv']
 MODEL:
   SVM:
     ACTIVE : False
