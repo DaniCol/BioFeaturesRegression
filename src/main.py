@@ -116,6 +116,7 @@ def main_ML(cfg):
             tablefmt="orgtbl",
         )
     )
+    print(BioRegressor.get_params())
 
     # Write Prediction to a CSV file
     file = open(cfg["MODEL_OUTPUT"], "w")
