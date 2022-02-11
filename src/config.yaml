@@ -37,8 +37,8 @@ MODEL:
     MAX_DEPTH : 100
     GRID_SEARCH:
       ACTIVE: True
-      N_ESTIMATOR : [3,200]
-      MAX_DEPTH : [3,100]
+      N_ESTIMATOR : [10,200,10]
+      MAX_DEPTH : [10,100,10]
   LINEAR :
     ACTIVE : False
     NORM : False

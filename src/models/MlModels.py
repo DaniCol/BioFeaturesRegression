@@ -38,10 +38,9 @@ class BIOregressor:
                     "tol": self.cfg["SVM"]["GRID_SEARCH"]["TOL"],
                     "C": self.cfg["SVM"]["GRID_SEARCH"]["C"],
                     "epsilon": self.cfg["SVM"]["GRID_SEARCH"]["EPS"],
-                    "shrinking": [True, False],
                 }
                 self.grid_search = GridSearchCV(
-                    self.model, self.params, verbose=2, cv = 3
+                    self.model, self.params, verbose=2, cv=3
                 )
 
         if self.cfg["RANDOMFOREST"]["ACTIVE"]:
@@ -52,20 +51,14 @@ class BIOregressor:
             if self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["ACTIVE"]:
                 self.params = {
                     "n_estimators": list(
-                        range(
-                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["N_ESTIMATOR"][0],
-                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["N_ESTIMATOR"][1],
-                        )
+                        range(*self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["N_ESTIMATOR"])
                     ),
                     "max_depth": list(
-                        range(
-                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["MAX_DEPTH"][0],
-                            self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["MAX_DEPTH"][1],
-                        )
+                        range(*self.cfg["RANDOMFOREST"]["GRID_SEARCH"]["MAX_DEPTH"])
                     ),
                 }
                 self.grid_search = GridSearchCV(
-                    self.model, self.params, verbose=2,cv = 3
+                    self.model, self.params, verbose=2, cv=3
                 )
 
         if self.cfg["LINEAR"]["ACTIVE"]:
@@ -93,8 +86,8 @@ class BIOregressor:
     def train_grid_search(self, X_train, X_valid, Y_train, Y_valid):
         """Function to train a model with grid search optim
         """
-        X_train = np.concatenate((X_train,X_valid))
-        Y_train = np.concatenate((Y_train,Y_valid)).ravel()
+        X_train = np.concatenate((X_train, X_valid))
+        Y_train = np.concatenate((Y_train, Y_valid)).ravel()
         # Train with grid search
         print("Sart Training with grid search")
         self.grid_search.fit(X_train, Y_train)
@@ -145,6 +138,9 @@ class BIOregressor:
             tuple of int: the train and valid R2 coeef
         """
         return self.r2_train, self.r2_valid
+
+    def get_grid_search_params(self):
+        return self.grid_search.get_params()
 
     def get_model(self):
         """This function will be usefull to plot the regression trees
