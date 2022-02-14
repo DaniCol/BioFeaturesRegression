@@ -149,3 +149,17 @@ class BIOregressor:
             sklearn.model: the fitted model
         """
         return self.model
+
+    def visualize_model(self,y_predict,y_test):
+        """This function visualizes predicted data on valid set"
+
+        Args:
+            y_predict
+            y_test
+        """
+        x=np.linspace(-1,1,100)
+        plt.plot(y_predict,y_test,'*',label="Prediction")
+        plt.plot(x,x,'--',label='Identity')
+        plt.xlim([-1, 1])
+        plt.legend(loc="upper right")
+        plt.show()

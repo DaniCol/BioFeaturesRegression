@@ -136,12 +136,34 @@ class DataReader:
             tablefmt="orgtbl",
         )
 
-    def plot_features(self):
-        """Function to plot data
-        """
-        # TODO: plot stuff
-        return None
+    def plot_pca_variance(self,num_components=295,cumulative=False):
+        """A function to visualize pca variance
 
+        Args:
+            num_components (int): number of components 
+            cumulative (bool): whether we plot the cumulative variance or by components
+        """
+        if cumulative :
+            plt.plot(np.arange(1,num_components+1),np.cumsum(self.pca.explained_variance_ratio_[0:num_components]))
+            plt.title("Eplained Cumulative variance % by componant",size=18)
+            plt.xlabel("Number of Components",size = 14)
+            plt.ylabel("% Variance Explained", size=14)
+        else :
+            plt.hist(self.pca.explained_variance_ratio_[0:num_components])
+            plt.title("Eplained variance % by componant",size=18)
+            plt.xlabel("Component #",size = 14)
+            plt.ylabel("% Variance Explained", size=14)
+        
+        plt.show()
+    
+    def plot_missing_ratio(self):
+        """plots missing ratio
+        """
+        na_df = ((self.features==0).sum() / len(self.features)) * 100 
+        na_df = na_df.drop(na_df[na_df == 0].index).sort_values(ascending=False)
+        missing_data = pd.DataFrame({'Missing Ratio %' :na_df})
+        missing_data.plot(kind = "barh")
+        plt.show()
 
 if __name__ == "__main__":
     # Init the parser;
