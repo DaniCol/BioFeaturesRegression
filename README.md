@@ -60,3 +60,7 @@ To do so, modify in the config the PATHS variable
 cd src
 python3 average.py --path_to_config ./config.yaml
 ```
+
+
+# LIEN DE LA VIDEO 
+https://youtu.be/wkJ1TQOyfxs
