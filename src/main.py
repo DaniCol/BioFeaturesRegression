@@ -118,6 +118,9 @@ def main_ML(cfg):
     )
     print(BioRegressor.get_params())
 
+    #Plotting the validation set 
+    BioRegressor.visualize_model(valid_prediction,Y_valid)
+    
     # Write Prediction to a CSV file
     file = open(cfg["MODEL_OUTPUT"], "w")
 

@@ -5,6 +5,7 @@ PREPROCESSING:
     ACTIVE : True
     MINMAX: True
     MEANSTD: False
+  PCA : False
   NUM_COMPONNENT : 200
   VALID_RATIO : 0.2
   RANDOM_STATE : 21

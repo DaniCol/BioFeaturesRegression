@@ -36,7 +36,8 @@ class DataReader:
         self.reduced_features = None
 
         # Init PCA
-        self.pca = PCA(n_components=self.cfg["PREPROCESSING"]["NUM_COMPONNENT"])
+        if self.cfg["PREPROCESSING"]["PCA"]:
+            self.pca = PCA(n_components=self.cfg["PREPROCESSING"]["NUM_COMPONNENT"])
 
         # Define normaliser
         if self.cfg["PREPROCESSING"]["NORMALIZATION"]["MINMAX"]:
@@ -73,8 +74,12 @@ class DataReader:
             self.X_test = self.scaler.transform(self.X_test)
 
         # Run PCA on the input features and the test set
-        self.reduced_features = self.pca.fit_transform(self.features)
-        self.X_test = self.pca.transform(self.X_test)
+        if self.cfg["PREPROCESSING"]["PCA"]:
+            self.reduced_features = self.pca.fit_transform(self.features)
+            self.X_test = self.pca.transform(self.X_test)
+
+        else:
+            self.reduced_features = self.features
 
         # Split the data
         self.X_train, self.X_valid, self.Y_train, self.Y_valid = train_test_split(
@@ -131,12 +136,34 @@ class DataReader:
             tablefmt="orgtbl",
         )
 
-    def plot_features(self):
-        """Function to plot data
-        """
-        # TODO: plot stuff
-        return None
+    def plot_pca_variance(self,num_components=295,cumulative=False):
+        """A function to visualize pca variance
 
+        Args:
+            num_components (int): number of components 
+            cumulative (bool): whether we plot the cumulative variance or by components
+        """
+        if cumulative :
+            plt.plot(np.arange(1,num_components+1),np.cumsum(self.pca.explained_variance_ratio_[0:num_components]))
+            plt.title("Eplained Cumulative variance % by componant",size=18)
+            plt.xlabel("Number of Components",size = 14)
+            plt.ylabel("% Variance Explained", size=14)
+        else :
+            plt.hist(self.pca.explained_variance_ratio_[0:num_components])
+            plt.title("Eplained variance % by componant",size=18)
+            plt.xlabel("Component #",size = 14)
+            plt.ylabel("% Variance Explained", size=14)
+        
+        plt.show()
+    
+    def plot_missing_ratio(self):
+        """plots missing ratio
+        """
+        na_df = ((self.features==0).sum() / len(self.features)) * 100 
+        na_df = na_df.drop(na_df[na_df == 0].index).sort_values(ascending=False)
+        missing_data = pd.DataFrame({'Missing Ratio %' :na_df})
+        missing_data.plot(kind = "barh")
+        plt.show()
 
 if __name__ == "__main__":
     # Init the parser;
