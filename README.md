@@ -1,4 +1,7 @@
 # PROJET : Algorithmes en Data Sciences
+Daniel Colombo, Hamza Benslimane, Mathieu Nalpon 
+
+# Pipeline 
 
 ## Data Preparation
 
@@ -9,7 +12,10 @@ However, if you want yo use torch models, the data are load n a torch manner in 
 ## Dimension Reduction
 
 To reduce the dimension of our features, we can use a simple PCA the parameters of which can be found in the config file.
-We can test other methods like LDA or filtering methods ..  . . . . . . .
+
+## Normalise 
+
+There is the possibility to normalise the data with the MinMax method or the standart deviation. However, the data were already normalised between -1 and 1 so only the standart deviation is needed (in order to run an SVM). 
 
 ## Models
 
@@ -31,16 +37,11 @@ To tune the FCNetwork, check the config file and set 'ACTIVE' to True
 
 ### Data and Results Visualization
 
-à Implémenter
+After each training, we plot the predicted value with respect to the ground truth value. This way you can see how close the prediction of the regression is to the ground truth. 
 
-### Grid Search for svm/pca
+### Grid Search
 
-à implémenter
-
-### XGBoost
-
-à tester
-
+The grid search can be used to find the best parameters for a SVM and for a Random Forest. To train with grid search, check the config file and set RANDOM FOREST - GRID SEARCH - ACTIVE to true (if you want to train the grid search) make sure to set all the other model to False. 
 
 # RUN the training
 
@@ -50,4 +51,12 @@ Don't forget to change the MODEL_OUTPUT name depending on the model you want to 
 ```
 cd src
 python3 main.py --path_to_config ./config.yaml
+```
+# RUN the average
+
+One can run a model averaging by specifying the names of the CSV files in the config file that you want to average. 
+To do so, modify in the config the PATHS variable
+```
+cd src
+python3 average.py --path_to_config ./config.yaml
 ```
