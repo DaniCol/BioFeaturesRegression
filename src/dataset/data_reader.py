@@ -36,7 +36,8 @@ class DataReader:
         self.reduced_features = None
 
         # Init PCA
-        self.pca = PCA(n_components=self.cfg["PREPROCESSING"]["NUM_COMPONNENT"])
+        if self.cfg["PREPROCESSING"]["PCA"]:
+            self.pca = PCA(n_components=self.cfg["PREPROCESSING"]["NUM_COMPONNENT"])
 
         # Define normaliser
         if self.cfg["PREPROCESSING"]["NORMALIZATION"]["MINMAX"]:
@@ -73,8 +74,12 @@ class DataReader:
             self.X_test = self.scaler.transform(self.X_test)
 
         # Run PCA on the input features and the test set
-        self.reduced_features = self.pca.fit_transform(self.features)
-        self.X_test = self.pca.transform(self.X_test)
+        if self.cfg["PREPROCESSING"]["PCA"]:
+            self.reduced_features = self.pca.fit_transform(self.features)
+            self.X_test = self.pca.transform(self.X_test)
+
+        else:
+            self.reduced_features = self.features
 
         # Split the data
         self.X_train, self.X_valid, self.Y_train, self.Y_valid = train_test_split(
