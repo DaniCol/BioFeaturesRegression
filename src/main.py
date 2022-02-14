@@ -5,6 +5,7 @@ import csv
 import torch
 import torch.nn as nn
 import tqdm
+import matplotlib.pyplot as plt
 from dataset.data_reader import DataReader
 from dataset.dataloader import loader
 from tabulate import tabulate
@@ -101,13 +102,14 @@ def main_ML(cfg):
     BioRegressor = BIOregressor(cfg)
     print(BioRegressor.get_params())
     # Train the model
-    BioRegressor.train_grid_search(X_train, X_valid, Y_train, Y_valid)
+    BioRegressor.train(X_train, X_valid, Y_train, Y_valid)
 
     # Get the performances
     R2_train, R2_valid = BioRegressor.get_r2()
 
     # Run inference on the test set
-    test_prediction = BioRegressor.inference_grid_search(X_test)
+    test_prediction = BioRegressor.inference(X_test)
+    valid_prediction = BioRegressor.inference(X_valid)
 
     # Print the regression coeffs
     print(
@@ -120,7 +122,7 @@ def main_ML(cfg):
 
     #Plotting the validation set 
     BioRegressor.visualize_model(valid_prediction,Y_valid)
-    
+
     # Write Prediction to a CSV file
     file = open(cfg["MODEL_OUTPUT"], "w")
 

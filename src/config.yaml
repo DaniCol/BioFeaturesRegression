@@ -2,23 +2,23 @@ DATA_DIR: '../data'
 OUTPUT_DIR: '../models'
 PREPROCESSING:
   NORMALIZATION:
-    ACTIVE : True
-    MINMAX: True
+    ACTIVE : False
+    MINMAX: False
     MEANSTD: False
-  PCA : False
-  NUM_COMPONNENT : 200
+  PCA : True
+  NUM_COMPONNENT : 60
   VALID_RATIO : 0.2
   RANDOM_STATE : 21
   BATCH_SIZE : 4
   NUM_THREADS : 4
-MODEL_OUTPUT : "averaged_model.csv"
+MODEL_OUTPUT : "svm_model.csv"
 TENSORBOARD : "./tensorboard"
 AVERAGE: ['RandomForestSubmission.csv','SvrGridSearch.csv']
 MODEL:
   SVM:
-    ACTIVE : False
-    KERNEL: 'rbf'
-    DEGREE : 3
+    ACTIVE : True
+    KERNEL: 'poly'
+    DEGREE : 4
     GAMMA: 'scale'
     COEFF0: 0.0
     TOL : 0.001
@@ -34,11 +34,11 @@ MODEL:
       C: [1.0,2.0,0.5]
       EPS : [0.05,0.1,0.15,0.20]
   RANDOMFOREST :
-    ACTIVE : True
+    ACTIVE : False
     N_ESTIMATOR : 200
     MAX_DEPTH : 100
     GRID_SEARCH:
-      ACTIVE: True
+      ACTIVE: False
       N_ESTIMATOR : [10,200,10]
       MAX_DEPTH : [10,100,10]
   LINEAR :
